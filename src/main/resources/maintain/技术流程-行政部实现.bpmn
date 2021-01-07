@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0722b0z" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.4.0">
+  <bpmn:process id="Process_15xrt93" name="MaintainProcess_AdminDept" isExecutable="true">
+    <bpmn:endEvent id="Event_1oejqrx" name="已发单">
+      <bpmn:incoming>Flow_0zg9p4a</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_128pnqe" messageRef="Message_0iz567i" camunda:class="com.example.workflow.bpmn.maintain.MessageAdminDeptSendOutForm" />
+    </bpmn:endEvent>
+    <bpmn:userTask id="Activity_0w9p6gh" name="部门主任确认" camunda:assignee="lllimbo">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="adminDeptManagerConfirm" label="行政部门主任确认" type="boolean" defaultValue="true" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0b6aap1</bpmn:incoming>
+      <bpmn:outgoing>Flow_02v9c5f</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0b6aap1" sourceRef="Event_174ewn9" targetRef="Activity_0w9p6gh" />
+    <bpmn:startEvent id="Event_174ewn9" name="收到维修单">
+      <bpmn:outgoing>Flow_0b6aap1</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_17bb6ko" messageRef="Message_1wzub01" />
+    </bpmn:startEvent>
+    <bpmn:userTask id="Activity_0s1vvze" name="发单人填写部门登记表" camunda:assignee="${starter}">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="ownerName" label="业主姓名" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="mantainAddress" label="维修地址" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="ownerPhone" label="联系电话" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="reservationTime" label="预约时间" type="date">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="remark" label="备注" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="maintainProject" label="维修事项" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_02v9c5f</bpmn:incoming>
+      <bpmn:outgoing>Flow_0zg9p4a</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_02v9c5f" sourceRef="Activity_0w9p6gh" targetRef="Activity_0s1vvze" />
+    <bpmn:sequenceFlow id="Flow_0zg9p4a" sourceRef="Activity_0s1vvze" targetRef="Event_1oejqrx" />
+  </bpmn:process>
+  <bpmn:message id="Message_1wzub01" name="MessageOwnerMaintainFormFilled" />
+  <bpmn:message id="Message_0iz567i" name="MessageAdminDeptSendOutForm" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_15xrt93">
+      <bpmndi:BPMNEdge id="Flow_0zg9p4a_di" bpmnElement="Flow_0zg9p4a">
+        <di:waypoint x="540" y="120" />
+        <di:waypoint x="592" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02v9c5f_di" bpmnElement="Flow_02v9c5f">
+        <di:waypoint x="370" y="120" />
+        <di:waypoint x="440" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0b6aap1_di" bpmnElement="Flow_0b6aap1">
+        <di:waypoint x="198" y="120" />
+        <di:waypoint x="270" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_1oejqrx_di" bpmnElement="Event_1oejqrx">
+        <dc:Bounds x="592" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="593" y="78" width="34" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0w9p6gh_di" bpmnElement="Activity_0w9p6gh">
+        <dc:Bounds x="270" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_18c4u6e_di" bpmnElement="Event_174ewn9">
+        <dc:Bounds x="162" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="152" y="145" width="56" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0s1vvze_di" bpmnElement="Activity_0s1vvze">
+        <dc:Bounds x="440" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

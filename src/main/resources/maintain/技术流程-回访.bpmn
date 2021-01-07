@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_156qhjm" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.4.0">
+  <bpmn:process id="Process_0zvah1m" name="MaintainProcess_ReturnVisit" isExecutable="true">
+    <bpmn:startEvent id="Event_183ocfe" name="物业服务结束">
+      <bpmn:outgoing>Flow_1ck9z6p</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0zeoyco" messageRef="Message_1e8xgm4" />
+    </bpmn:startEvent>
+    <bpmn:manualTask id="Activity_14j3uxe" name="回访">
+      <bpmn:incoming>Flow_1ck9z6p</bpmn:incoming>
+      <bpmn:outgoing>Flow_1qxtqjk</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:userTask id="Activity_14hp44h" name="填写回访表单" camunda:assignee="lllimbo">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="askSomething" label="备注" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1qxtqjk</bpmn:incoming>
+      <bpmn:outgoing>Flow_0dzmme6</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_0l50f2e" name="已回访">
+      <bpmn:incoming>Flow_0dzmme6</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1ck9z6p" sourceRef="Event_183ocfe" targetRef="Activity_14j3uxe" />
+    <bpmn:sequenceFlow id="Flow_1qxtqjk" sourceRef="Activity_14j3uxe" targetRef="Activity_14hp44h" />
+    <bpmn:sequenceFlow id="Flow_0dzmme6" sourceRef="Activity_14hp44h" targetRef="Event_0l50f2e" />
+  </bpmn:process>
+  <bpmn:message id="Message_1e8xgm4" name="MessageOwnerVerified" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0zvah1m">
+      <bpmndi:BPMNEdge id="Flow_1ck9z6p_di" bpmnElement="Flow_1ck9z6p">
+        <di:waypoint x="208" y="120" />
+        <di:waypoint x="260" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qxtqjk_di" bpmnElement="Flow_1qxtqjk">
+        <di:waypoint x="360" y="120" />
+        <di:waypoint x="420" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0dzmme6_di" bpmnElement="Flow_0dzmme6">
+        <di:waypoint x="520" y="120" />
+        <di:waypoint x="582" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_183ocfe_di" bpmnElement="Event_183ocfe">
+        <dc:Bounds x="172" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="156" y="78" width="67" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_14j3uxe_di" bpmnElement="Activity_14j3uxe">
+        <dc:Bounds x="260" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_14hp44h_di" bpmnElement="Activity_14hp44h">
+        <dc:Bounds x="420" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0l50f2e_di" bpmnElement="Event_0l50f2e">
+        <dc:Bounds x="582" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="583" y="145" width="34" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

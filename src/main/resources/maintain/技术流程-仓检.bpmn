@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1mcb8ji" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.4.0">
+  <bpmn:process id="Process_1kodb3m" name="MaintainProcess_Warehouse" isExecutable="true">
+    <bpmn:startEvent id="Event_1d14mka" name="收到物料申请">
+      <bpmn:outgoing>Flow_1hqjxcj</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1uksnkn" messageRef="Message_18zj2gp" />
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_1cvdwcr" name="已发放">
+      <bpmn:incoming>Flow_1rcsq9e</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0a85n4e" messageRef="Message_0hiog2e" camunda:class="com.example.workflow.bpmn.maintain.MessageWarehouseMatSend" />
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1hqjxcj" sourceRef="Event_1d14mka" targetRef="Activity_0xv090l" />
+    <bpmn:sequenceFlow id="Flow_1rcsq9e" sourceRef="Activity_0xv090l" targetRef="Event_1cvdwcr" />
+    <bpmn:userTask id="Activity_0xv090l" name="确认已发放" camunda:assignee="lllimbo">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="confirm" label="已发放" type="boolean" defaultValue="true" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1hqjxcj</bpmn:incoming>
+      <bpmn:outgoing>Flow_1rcsq9e</bpmn:outgoing>
+    </bpmn:userTask>
+  </bpmn:process>
+  <bpmn:message id="Message_0hiog2e" name="MessageWarehouseMatSend" />
+  <bpmn:message id="Message_18zj2gp" name="MessageMatApplied" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1kodb3m">
+      <bpmndi:BPMNEdge id="Flow_1hqjxcj_di" bpmnElement="Flow_1hqjxcj">
+        <di:waypoint x="208" y="120" />
+        <di:waypoint x="260" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1rcsq9e_di" bpmnElement="Flow_1rcsq9e">
+        <di:waypoint x="360" y="120" />
+        <di:waypoint x="412" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_1d14mka_di" bpmnElement="Event_1d14mka">
+        <dc:Bounds x="172" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="157" y="145" width="67" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1cvdwcr_di" bpmnElement="Event_1cvdwcr">
+        <dc:Bounds x="412" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="413" y="145" width="34" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0m37yi9_di" bpmnElement="Activity_0xv090l">
+        <dc:Bounds x="260" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

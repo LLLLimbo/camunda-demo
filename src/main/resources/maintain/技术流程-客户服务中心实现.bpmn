@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1yaoxou" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.4.0">
+  <bpmn:process id="Process_1ak3xvy" name="MaintainProcess_StaffCenter" isExecutable="true">
+    <bpmn:intermediateThrowEvent id="Event_1wt5w47" name="汇总表已填写">
+      <bpmn:incoming>Flow_086jvvb</bpmn:incoming>
+      <bpmn:outgoing>Flow_0j1pz3t</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1srf5ql" messageRef="Message_0swg44d" camunda:class="com.example.workflow.bpmn.maintain.MessageStaffAggregateFormFilled" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:businessRuleTask id="Activity_14wx7np" name="维修项目评估" camunda:resultVariable="accessResult" camunda:decisionRef="Decision_MaintainProjectAccess" camunda:mapDecisionResult="singleResult">
+      <bpmn:incoming>Flow_0h99jo0</bpmn:incoming>
+      <bpmn:outgoing>Flow_0i5a1l6</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:intermediateCatchEvent id="Event_1r0bzsd" name="维修完成">
+      <bpmn:incoming>Flow_0j1pz3t</bpmn:incoming>
+      <bpmn:incoming>Flow_0ag5lx1</bpmn:incoming>
+      <bpmn:outgoing>Flow_1nplta5</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0que0ce" messageRef="Message_16t9nct" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:userTask id="Activity_0v3rh6i" name="确认已沟通" camunda:assignee="lllimbo">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="confirmConnected" label="确认已沟通" type="boolean" defaultValue="true" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0i5a1l6</bpmn:incoming>
+      <bpmn:outgoing>Flow_0hazgk4</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:intermediateThrowEvent id="Event_1t6cucf" name="已联系">
+      <bpmn:incoming>Flow_0hazgk4</bpmn:incoming>
+      <bpmn:outgoing>Flow_1hzzoy0</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0jdatmb" messageRef="Message_1stmq6y" camunda:class="com.example.workflow.bpmn.maintain.MessageStaffConnected" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:endEvent id="Event_0p751k7" name="已验收">
+      <bpmn:incoming>Flow_0anhejo</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:eventBasedGateway id="Gateway_0uofaun" name="验收结果">
+      <bpmn:incoming>Flow_1nplta5</bpmn:incoming>
+      <bpmn:outgoing>Flow_16e4nfm</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0ybxrt3</bpmn:outgoing>
+    </bpmn:eventBasedGateway>
+    <bpmn:intermediateCatchEvent id="Event_0h9i5md" name="验收通过">
+      <bpmn:incoming>Flow_16e4nfm</bpmn:incoming>
+      <bpmn:outgoing>Flow_0anhejo</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1j42cls" messageRef="Message_1wwl9fu" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:intermediateCatchEvent id="Event_03y5m0u" name="返工">
+      <bpmn:incoming>Flow_0ybxrt3</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ag5lx1</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1ah95o6" messageRef="Message_1643uhd" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_0j1pz3t" sourceRef="Event_1wt5w47" targetRef="Event_1r0bzsd" />
+    <bpmn:sequenceFlow id="Flow_0h99jo0" sourceRef="Event_1gtbbto" targetRef="Activity_14wx7np" />
+    <bpmn:sequenceFlow id="Flow_0i5a1l6" sourceRef="Activity_14wx7np" targetRef="Activity_0v3rh6i" />
+    <bpmn:sequenceFlow id="Flow_0ag5lx1" sourceRef="Event_03y5m0u" targetRef="Event_1r0bzsd" />
+    <bpmn:sequenceFlow id="Flow_1nplta5" sourceRef="Event_1r0bzsd" targetRef="Gateway_0uofaun" />
+    <bpmn:sequenceFlow id="Flow_0hazgk4" sourceRef="Activity_0v3rh6i" targetRef="Event_1t6cucf" />
+    <bpmn:sequenceFlow id="Flow_0anhejo" sourceRef="Event_0h9i5md" targetRef="Event_0p751k7" />
+    <bpmn:sequenceFlow id="Flow_16e4nfm" sourceRef="Gateway_0uofaun" targetRef="Event_0h9i5md" />
+    <bpmn:sequenceFlow id="Flow_0ybxrt3" sourceRef="Gateway_0uofaun" targetRef="Event_03y5m0u" />
+    <bpmn:startEvent id="Event_1gtbbto" name="收到行政分发的维修单">
+      <bpmn:outgoing>Flow_0h99jo0</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0gjyh3h" messageRef="Message_1cf3vbq" />
+    </bpmn:startEvent>
+    <bpmn:userTask id="Activity_0xagmk7" name="填写工程单汇总表" camunda:assignee="lllimbo">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="ownerName" label="业主姓名" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="mantainAddress" label="维修地址" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="ownerPhone" label="联系电话" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="reservationTime" label="预约时间" type="date">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="remark" label="备注" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="maintainProject" label="维修事项" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1r1hko2</bpmn:incoming>
+      <bpmn:outgoing>Flow_086jvvb</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_086jvvb" sourceRef="Activity_0xagmk7" targetRef="Event_1wt5w47" />
+    <bpmn:eventBasedGateway id="Gateway_1hlkbfl" name="是否继续">
+      <bpmn:incoming>Flow_1hzzoy0</bpmn:incoming>
+      <bpmn:outgoing>Flow_1q11ebv</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0bzqg6a</bpmn:outgoing>
+    </bpmn:eventBasedGateway>
+    <bpmn:intermediateCatchEvent id="Event_1swzbdl" name="业主确认继续">
+      <bpmn:incoming>Flow_1q11ebv</bpmn:incoming>
+      <bpmn:outgoing>Flow_1r1hko2</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1y7xuje" messageRef="Message_06812ed" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:intermediateCatchEvent id="Event_1qdz7o3" name="业主已取消">
+      <bpmn:incoming>Flow_0bzqg6a</bpmn:incoming>
+      <bpmn:outgoing>Flow_0z1xmrt</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_01731xn" messageRef="Message_0qs000v" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_1q11ebv" sourceRef="Gateway_1hlkbfl" targetRef="Event_1swzbdl" />
+    <bpmn:sequenceFlow id="Flow_0bzqg6a" sourceRef="Gateway_1hlkbfl" targetRef="Event_1qdz7o3" />
+    <bpmn:sequenceFlow id="Flow_1hzzoy0" sourceRef="Event_1t6cucf" targetRef="Gateway_1hlkbfl" />
+    <bpmn:sequenceFlow id="Flow_1r1hko2" sourceRef="Event_1swzbdl" targetRef="Activity_0xagmk7" />
+    <bpmn:sequenceFlow id="Flow_0z1xmrt" sourceRef="Event_1qdz7o3" targetRef="Event_0hwft0f" />
+    <bpmn:endEvent id="Event_0hwft0f" name="业主已取消">
+      <bpmn:incoming>Flow_0z1xmrt</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:process>
+  <bpmn:message id="Message_1cf3vbq" name="MessageAdminDeptSendOutForm" />
+  <bpmn:message id="Message_1stmq6y" name="MessageStaffConnected" />
+  <bpmn:message id="Message_06812ed" name="MessageOwnerConfirmContinuation" />
+  <bpmn:message id="Message_0swg44d" name="MessageStaffAggregateFormFilled" />
+  <bpmn:message id="Message_16t9nct" name="MessageMaintainFinishedStaff" />
+  <bpmn:message id="Message_1643uhd" name="MessageOwnerReworkStaff" />
+  <bpmn:message id="Message_1wwl9fu" name="MessageOwnerVerified" />
+  <bpmn:message id="Message_0qs000v" name="MessageOwnerCanceled" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1ak3xvy">
+      <bpmndi:BPMNEdge id="Flow_086jvvb_di" bpmnElement="Flow_086jvvb">
+        <di:waypoint x="990" y="130" />
+        <di:waypoint x="1042" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ybxrt3_di" bpmnElement="Flow_0ybxrt3">
+        <di:waypoint x="1255" y="155" />
+        <di:waypoint x="1255" y="192" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16e4nfm_di" bpmnElement="Flow_16e4nfm">
+        <di:waypoint x="1280" y="130" />
+        <di:waypoint x="1327" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0anhejo_di" bpmnElement="Flow_0anhejo">
+        <di:waypoint x="1363" y="130" />
+        <di:waypoint x="1437" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hazgk4_di" bpmnElement="Flow_0hazgk4">
+        <di:waypoint x="570" y="130" />
+        <di:waypoint x="632" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1nplta5_di" bpmnElement="Flow_1nplta5">
+        <di:waypoint x="1163" y="130" />
+        <di:waypoint x="1230" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ag5lx1_di" bpmnElement="Flow_0ag5lx1">
+        <di:waypoint x="1237" y="210" />
+        <di:waypoint x="1145" y="210" />
+        <di:waypoint x="1145" y="148" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0i5a1l6_di" bpmnElement="Flow_0i5a1l6">
+        <di:waypoint x="400" y="130" />
+        <di:waypoint x="470" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0h99jo0_di" bpmnElement="Flow_0h99jo0">
+        <di:waypoint x="218" y="130" />
+        <di:waypoint x="300" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0j1pz3t_di" bpmnElement="Flow_0j1pz3t">
+        <di:waypoint x="1078" y="130" />
+        <di:waypoint x="1127" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0z1xmrt_di" bpmnElement="Flow_0z1xmrt">
+        <di:waypoint x="758" y="210" />
+        <di:waypoint x="802" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1q11ebv_di" bpmnElement="Flow_1q11ebv">
+        <di:waypoint x="765" y="130" />
+        <di:waypoint x="802" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0bzqg6a_di" bpmnElement="Flow_0bzqg6a">
+        <di:waypoint x="740" y="155" />
+        <di:waypoint x="740" y="192" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1hzzoy0_di" bpmnElement="Flow_1hzzoy0">
+        <di:waypoint x="668" y="130" />
+        <di:waypoint x="715" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1r1hko2_di" bpmnElement="Flow_1r1hko2">
+        <di:waypoint x="838" y="130" />
+        <di:waypoint x="890" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_1wt5w47_di" bpmnElement="Event_1wt5w47">
+        <dc:Bounds x="1042" y="112" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1027" y="88" width="66" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1r0bzsd_di" bpmnElement="Event_1r0bzsd">
+        <dc:Bounds x="1127" y="112" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1122" y="88" width="45" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0p751k7_di" bpmnElement="Event_0p751k7">
+        <dc:Bounds x="1437" y="112" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1438" y="155" width="34" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0uofaun_di" bpmnElement="Gateway_0uofaun">
+        <dc:Bounds x="1230" y="105" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1232" y="81" width="45" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0h9i5md_di" bpmnElement="Event_0h9i5md">
+        <dc:Bounds x="1327" y="112" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1323" y="155" width="45" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0xagmk7_di" bpmnElement="Activity_0xagmk7">
+        <dc:Bounds x="890" y="90" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_06hktx5_di" bpmnElement="Event_1gtbbto">
+        <dc:Bounds x="182" y="112" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="161" y="155" width="78" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0v3rh6i_di" bpmnElement="Activity_0v3rh6i">
+        <dc:Bounds x="470" y="90" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1t6cucf_di" bpmnElement="Event_1t6cucf">
+        <dc:Bounds x="632" y="112" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="633" y="88" width="34" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_14wx7np_di" bpmnElement="Activity_14wx7np">
+        <dc:Bounds x="300" y="90" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1hlkbfl_di" bpmnElement="Gateway_1hlkbfl">
+        <dc:Bounds x="715" y="105" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="717" y="81" width="45" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1swzbdl_di" bpmnElement="Event_1swzbdl">
+        <dc:Bounds x="802" y="112" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="787" y="155" width="67" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1qdz7o3_di" bpmnElement="Event_1qdz7o3">
+        <dc:Bounds x="722" y="192" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="712" y="235" width="56" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1e27a6m_di" bpmnElement="Event_0hwft0f">
+        <dc:Bounds x="802" y="192" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="792" y="238" width="56" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_03y5m0u_di" bpmnElement="Event_03y5m0u">
+        <dc:Bounds x="1237" y="192" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1244" y="238" width="22" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

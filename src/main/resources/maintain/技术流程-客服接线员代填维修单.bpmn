@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0kzoill" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.4.0">
+  <bpmn:process id="Process_0wykd64" name="MaintainProcess_SwitchboardOp" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="接到来电">
+      <bpmn:outgoing>Flow_0639gz3</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_0pit6f9" name="已代填">
+      <bpmn:incoming>Flow_02f0md0</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0vfcjmz" messageRef="Message_14s9uy6" camunda:class="com.example.workflow.bpmn.maintain.MessageOwnerMaintainFormFilledAlternatively" />
+    </bpmn:endEvent>
+    <bpmn:userTask id="Activity_11kc04l" name="填写维修单" camunda:assignee="${starter}">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="ownerName" label="业主姓名" type="string" />
+          <camunda:formField id="mantainAddress" label="维修地址" type="string" />
+          <camunda:formField id="ownerPhone" label="联系电话" type="string" />
+          <camunda:formField id="reservationTime" label="预约时间" type="date" />
+          <camunda:formField id="remark" label="备注" type="string" />
+          <camunda:formField id="maintainProject" label="维修事项" type="enum">
+            <camunda:value id="bulb" name="灯泡" />
+            <camunda:value id="faucets" name="水龙头" />
+            <camunda:value id="door" name="门" />
+            <camunda:value id="lock" name="门锁" />
+            <camunda:value id="pipe" name="管道" />
+            <camunda:value id="toilet" name="马桶" />
+            <camunda:value id="roof" name="屋顶" />
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0639gz3</bpmn:incoming>
+      <bpmn:outgoing>Flow_02f0md0</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0639gz3" sourceRef="StartEvent_1" targetRef="Activity_11kc04l" />
+    <bpmn:sequenceFlow id="Flow_02f0md0" sourceRef="Activity_11kc04l" targetRef="Event_0pit6f9" />
+  </bpmn:process>
+  <bpmn:message id="Message_14s9uy6" name="MessageOwnerMaintainFormFilledAlternatively" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0wykd64">
+      <bpmndi:BPMNEdge id="Flow_0639gz3_di" bpmnElement="Flow_0639gz3">
+        <di:waypoint x="215" y="130" />
+        <di:waypoint x="280" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02f0md0_di" bpmnElement="Flow_02f0md0">
+        <di:waypoint x="380" y="130" />
+        <di:waypoint x="432" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_11kc04l_di" bpmnElement="Activity_11kc04l">
+        <dc:Bounds x="280" y="90" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="112" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="175" y="155" width="44" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_00i4eh4_di" bpmnElement="Event_0pit6f9">
+        <dc:Bounds x="432" y="112" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="433" y="155" width="34" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
