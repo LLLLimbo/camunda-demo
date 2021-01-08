@@ -1,16 +1,13 @@
 package com.example.workflow.bpmn.maintain;
 
-import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.MAINTAINER_PROCESS_BUSINESS_KEY;
-import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.MAINTAINER_PROCESS_INSTANCE_ID;
-import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.MAINTAIN_DEPT_MANAGER_PROCESS_INSTANCE_ID;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.STAFF_CENTER_PROCESS_INSTANCE_ID;
+import static com.example.workflow.bpmn.maintain.MaintainProcessMessageNames.MSG_OWNER_REWORK_STAFF;
 
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.engine.runtime.EventSubscription;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
 
 @Slf4j
 public class MessageOwnerReworkStaff implements JavaDelegate {
@@ -27,7 +24,7 @@ public class MessageOwnerReworkStaff implements JavaDelegate {
     EventSubscription subscriptionInStaff = runtimeService.createEventSubscriptionQuery()
         .processInstanceId(staffInstanceId)
         .eventType("message")
-        .eventName("MessageOwnerReworkStaff")
+        .eventName(MSG_OWNER_REWORK_STAFF)
         .singleResult();
 
     runtimeService.messageEventReceived(subscriptionInStaff.getEventName(),

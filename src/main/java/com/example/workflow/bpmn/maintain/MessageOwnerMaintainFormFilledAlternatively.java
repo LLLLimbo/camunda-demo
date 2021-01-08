@@ -1,5 +1,8 @@
 package com.example.workflow.bpmn.maintain;
 
+import static com.example.workflow.bpmn.maintain.MaintainProcessBusinessKeyPrefix.MAINTAIN_PROCESS_OWNER;
+import static com.example.workflow.bpmn.maintain.MaintainProcessMessageNames.MSG_OWNER_MAINTAIN_FORM_FILLED_ALTER;
+
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +26,8 @@ public class MessageOwnerMaintainFormFilledAlternatively implements JavaDelegate
     variables.put("starter", "ownerName");
 
     runtimeService
-        .startProcessInstanceByMessage("MessageOwnerMaintainFormFilledAlternatively",
-            "MaintainProcess_Owner",
+        .startProcessInstanceByMessage(MSG_OWNER_MAINTAIN_FORM_FILLED_ALTER,
+            MAINTAIN_PROCESS_OWNER+delegateExecution.getCurrentActivityId(),
             variables);
   }
 }

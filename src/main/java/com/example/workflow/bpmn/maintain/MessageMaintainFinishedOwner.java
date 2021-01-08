@@ -1,6 +1,7 @@
 package com.example.workflow.bpmn.maintain;
 
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.OWNER_MAINTAIN_PROCESS_INSTANCE_ID;
+import static com.example.workflow.bpmn.maintain.MaintainProcessMessageNames.MSG_MAINTAIN_FINISHED_OWNER;
 
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.RuntimeService;
@@ -23,7 +24,7 @@ public class MessageMaintainFinishedOwner implements JavaDelegate {
     EventSubscription subscriptionInOwner = runtimeService.createEventSubscriptionQuery()
         .processInstanceId(ownerMaintainProcessInstanceId)
         .eventType("message")
-        .eventName("MessageMaintainFinishedOwner")
+        .eventName(MSG_MAINTAIN_FINISHED_OWNER)
         .singleResult();
 
     runtimeService

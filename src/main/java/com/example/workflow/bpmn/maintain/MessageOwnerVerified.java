@@ -1,6 +1,8 @@
 package com.example.workflow.bpmn.maintain;
 
+import static com.example.workflow.bpmn.maintain.MaintainProcessBusinessKeyPrefix.MAINTAIN_PROCESS_RETURN_VISIT;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.STAFF_CENTER_PROCESS_INSTANCE_ID;
+import static com.example.workflow.bpmn.maintain.MaintainProcessMessageNames.MSG_OWNER_VERIFIED;
 
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.RuntimeService;
@@ -23,7 +25,7 @@ public class MessageOwnerVerified implements JavaDelegate {
     EventSubscription subscription = runtimeService.createEventSubscriptionQuery()
         .processInstanceId(staffInstanceId)
         .eventType("message")
-        .eventName("MessageOwnerVerified")
+        .eventName(MSG_OWNER_VERIFIED)
         .singleResult();
 
     //触发客户服务中心流程中的消息事件
@@ -31,7 +33,8 @@ public class MessageOwnerVerified implements JavaDelegate {
 
     //消息启动回访流程
     runtimeService
-        .startProcessInstanceByMessage("MessageOwnerVerified", "MaintainProcess_ReturnVisit",
+        .startProcessInstanceByMessage(MSG_OWNER_VERIFIED,
+            MAINTAIN_PROCESS_RETURN_VISIT + delegateExecution.getCurrentActivityId(),
             delegateExecution.getVariables());
   }
 }

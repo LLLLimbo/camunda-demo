@@ -1,9 +1,11 @@
 package com.example.workflow.bpmn.maintain;
 
+import static com.example.workflow.bpmn.maintain.MaintainProcessBusinessKeyPrefix.MAINTAIN_PROCESS_STAFF_CENTER;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.ADMIN_DEPT_PROCESS_BUSINESS_KEY;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.ADMIN_DEPT_PROCESS_INSTANCE_ID;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.STAFF_CENTER_DEPT_PROCESS_BUSINESS_KEY;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.STAFF_CENTER_PROCESS_INSTANCE_ID;
+import static com.example.workflow.bpmn.maintain.MaintainProcessMessageNames.MSG_ADMIN_DEPT_SEND_OUT_FORM;
 
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.RuntimeService;
@@ -26,12 +28,14 @@ public class MessageAdminDeptSendOutForm implements JavaDelegate {
         .setVariable(ADMIN_DEPT_PROCESS_BUSINESS_KEY, delegateExecution.getProcessBusinessKey());
 
     ProcessInstance adminDeptStageInstance = runtimeService
-        .startProcessInstanceByMessage("MessageAdminDeptSendOutForm", "MaintainProcess_StaffCenter",
+        .startProcessInstanceByMessage(MSG_ADMIN_DEPT_SEND_OUT_FORM,
+            MAINTAIN_PROCESS_STAFF_CENTER + delegateExecution.getCurrentActivityId(),
             delegateExecution.getVariables());
 
     delegateExecution
         .setVariable(STAFF_CENTER_PROCESS_INSTANCE_ID, adminDeptStageInstance.getId());
     delegateExecution
-        .setVariable(STAFF_CENTER_DEPT_PROCESS_BUSINESS_KEY, adminDeptStageInstance.getBusinessKey());
+        .setVariable(STAFF_CENTER_DEPT_PROCESS_BUSINESS_KEY,
+            adminDeptStageInstance.getBusinessKey());
   }
 }

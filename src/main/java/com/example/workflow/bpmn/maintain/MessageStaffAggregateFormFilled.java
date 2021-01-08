@@ -1,11 +1,13 @@
 package com.example.workflow.bpmn.maintain;
 
+import static com.example.workflow.bpmn.maintain.MaintainProcessBusinessKeyPrefix.MAINTAIN_PROCESS_MAINTAIN_DEPT_MANAGER;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.MAINTAIN_DEPT_MANAGER_PROCESS_BUSINESS_KEY;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.MAINTAIN_DEPT_MANAGER_PROCESS_INSTANCE_ID;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.OWNER_MAINTAIN_PROCESS_BUSINESS_KEY;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.OWNER_MAINTAIN_PROCESS_INSTANCE_ID;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.STAFF_CENTER_DEPT_PROCESS_BUSINESS_KEY;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.STAFF_CENTER_PROCESS_INSTANCE_ID;
+import static com.example.workflow.bpmn.maintain.MaintainProcessMessageNames.MSG_STAFF_AGG_FORM_FILLED;
 
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.RuntimeService;
@@ -22,8 +24,10 @@ public class MessageStaffAggregateFormFilled implements JavaDelegate {
 
     RuntimeService runtimeService = delegateExecution.getProcessEngine().getRuntimeService();
 
-    String ownerInstanceId=delegateExecution.getVariablesTyped().getValue(OWNER_MAINTAIN_PROCESS_INSTANCE_ID,String.class);
-    String ownerInstanceKey=delegateExecution.getVariablesTyped().getValue(OWNER_MAINTAIN_PROCESS_BUSINESS_KEY,String.class);
+    String ownerInstanceId = delegateExecution.getVariablesTyped()
+        .getValue(OWNER_MAINTAIN_PROCESS_INSTANCE_ID, String.class);
+    String ownerInstanceKey = delegateExecution.getVariablesTyped()
+        .getValue(OWNER_MAINTAIN_PROCESS_BUSINESS_KEY, String.class);
 
     delegateExecution
         .setVariable(STAFF_CENTER_PROCESS_INSTANCE_ID, delegateExecution.getProcessInstanceId());
@@ -35,12 +39,15 @@ public class MessageStaffAggregateFormFilled implements JavaDelegate {
         ownerInstanceKey);
 
     ProcessInstance ownerMaintainProcessInstance = runtimeService
-        .startProcessInstanceByMessage("MessageStaffAggregateFormFilled", "MaintainProcess_MaintainDeptManager",
+        .startProcessInstanceByMessage(MSG_STAFF_AGG_FORM_FILLED,
+            MAINTAIN_PROCESS_MAINTAIN_DEPT_MANAGER + delegateExecution.getCurrentActivityId(),
             delegateExecution.getVariables());
 
     delegateExecution
-        .setVariable(MAINTAIN_DEPT_MANAGER_PROCESS_INSTANCE_ID, ownerMaintainProcessInstance.getId());
+        .setVariable(MAINTAIN_DEPT_MANAGER_PROCESS_INSTANCE_ID,
+            ownerMaintainProcessInstance.getId());
     delegateExecution
-        .setVariable(MAINTAIN_DEPT_MANAGER_PROCESS_BUSINESS_KEY, ownerMaintainProcessInstance.getBusinessKey());
+        .setVariable(MAINTAIN_DEPT_MANAGER_PROCESS_BUSINESS_KEY,
+            ownerMaintainProcessInstance.getBusinessKey());
   }
 }

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_1fifax7" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" expressionLanguage="groovy" exporter="Camunda Modeler" exporterVersion="4.4.0">
+  <decision id="Decision_MaintainProjectAccess" name="维修项目评估" camunda:versionTag="1.0">
+    <decisionTable id="DecisionTable_1a60t6o">
+      <input id="Input_1" label="维修项目" camunda:inputVariable="maintainProject">
+        <inputExpression id="InputExpression_1" typeRef="string" expressionLanguage="groovy">
+          <text></text>
+        </inputExpression>
+        <inputValues id="UnaryTests_11qef3x">
+          <text>"bulb","faucets","door","pipe","toilet","lock","roof"</text>
+        </inputValues>
+      </input>
+      <output id="Output_1" label="维修项目级别" name="maintainProjectLevel" typeRef="integer" />
+      <output id="OutputClause_1sh5car" label="定价" name="price" typeRef="long" />
+      <rule id="DecisionRule_1xd7kgm">
+        <inputEntry id="UnaryTests_0oih1jz">
+          <text>"bulb".equals(maintainProject)</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0e39ppo">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1q8mk6v">
+          <text>20</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1uqnv16">
+        <inputEntry id="UnaryTests_0msu2fn">
+          <text>"faucets".equals(maintainProject)</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xzfx9n">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1hqmwqw">
+          <text>50</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1drh0oz">
+        <inputEntry id="UnaryTests_14h0rbv">
+          <text>"door".equals(maintainProject)</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1nxyiia">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1qpv3ni">
+          <text>100</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_12x4ejm">
+        <inputEntry id="UnaryTests_1ycrk80">
+          <text>"lock".equals(maintainProject)</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_19tec3v">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0hxlupa">
+          <text>200</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0bhil1q">
+        <inputEntry id="UnaryTests_1ckrkmy">
+          <text>"pipe".equals(maintainProject)</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0dfjgph">
+          <text>2</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0qc0eo9">
+          <text>0</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0sko02y">
+        <inputEntry id="UnaryTests_0dswwe2">
+          <text>"toilet".equals(maintainProject)</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1unu79s">
+          <text>2</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_07nxcx9">
+          <text>250</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_18tq7co">
+        <inputEntry id="UnaryTests_01l4gb8">
+          <text>"roof".equals(maintainProject)</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1o0yxmk">
+          <text>2</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0196pf0">
+          <text>1000</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_MaintainProjectAccess">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

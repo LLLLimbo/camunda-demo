@@ -2,6 +2,7 @@ package com.example.workflow.bpmn.maintain;
 
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.MAINTAINER_PROCESS_INSTANCE_ID;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.STAFF_CENTER_PROCESS_INSTANCE_ID;
+import static com.example.workflow.bpmn.maintain.MaintainProcessMessageNames.MSG_WAREHOUSE_MAT_SEND;
 
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.RuntimeService;
@@ -24,7 +25,7 @@ public class MessageWarehouseMatSend implements JavaDelegate {
     EventSubscription subscription = runtimeService.createEventSubscriptionQuery()
         .processInstanceId(maintainerProcessInstanceId)
         .eventType("message")
-        .eventName("MessageWarehouseMatSend")
+        .eventName(MSG_WAREHOUSE_MAT_SEND)
         .singleResult();
 
     runtimeService

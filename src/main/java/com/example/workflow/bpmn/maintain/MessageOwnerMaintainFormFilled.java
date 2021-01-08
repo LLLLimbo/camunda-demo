@@ -1,9 +1,11 @@
 package com.example.workflow.bpmn.maintain;
 
+import static com.example.workflow.bpmn.maintain.MaintainProcessBusinessKeyPrefix.MAINTAIN_PROCESS_ADMIN_DEPT;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.ADMIN_DEPT_PROCESS_BUSINESS_KEY;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.ADMIN_DEPT_PROCESS_INSTANCE_ID;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.OWNER_MAINTAIN_PROCESS_BUSINESS_KEY;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.OWNER_MAINTAIN_PROCESS_INSTANCE_ID;
+import static com.example.workflow.bpmn.maintain.MaintainProcessMessageNames.MSG_OWNER_MAINTAIN_FORM_FILLED;
 
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.RuntimeService;
@@ -26,7 +28,7 @@ public class MessageOwnerMaintainFormFilled implements JavaDelegate {
         .setVariable(OWNER_MAINTAIN_PROCESS_BUSINESS_KEY, delegateExecution.getProcessBusinessKey());
 
     ProcessInstance adminDeptStageInstance = runtimeService
-        .startProcessInstanceByMessage("MessageOwnerMaintainFormFilled", "MaintainProcess_AdminDept",
+        .startProcessInstanceByMessage(MSG_OWNER_MAINTAIN_FORM_FILLED, MAINTAIN_PROCESS_ADMIN_DEPT+delegateExecution.getCurrentActivityId(),
             delegateExecution.getVariables());
 
     delegateExecution

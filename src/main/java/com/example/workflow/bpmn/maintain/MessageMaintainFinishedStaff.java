@@ -2,6 +2,7 @@ package com.example.workflow.bpmn.maintain;
 
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.OWNER_MAINTAIN_PROCESS_INSTANCE_ID;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.STAFF_CENTER_PROCESS_INSTANCE_ID;
+import static com.example.workflow.bpmn.maintain.MaintainProcessMessageNames.MSG_MAINTAIN_FINISHED_STAFF;
 
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.RuntimeService;
@@ -24,7 +25,7 @@ public class MessageMaintainFinishedStaff implements JavaDelegate {
     EventSubscription subscriptionInStaffCenter = runtimeService.createEventSubscriptionQuery()
         .processInstanceId(staffCenterInstanceId)
         .eventType("message")
-        .eventName("MessageMaintainFinishedStaff")
+        .eventName(MSG_MAINTAIN_FINISHED_STAFF)
         .singleResult();
 
     runtimeService

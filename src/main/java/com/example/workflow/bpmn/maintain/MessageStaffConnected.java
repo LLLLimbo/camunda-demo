@@ -3,6 +3,7 @@ package com.example.workflow.bpmn.maintain;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.OWNER_MAINTAIN_PROCESS_INSTANCE_ID;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.STAFF_CENTER_DEPT_PROCESS_BUSINESS_KEY;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.STAFF_CENTER_PROCESS_INSTANCE_ID;
+import static com.example.workflow.bpmn.maintain.MaintainProcessMessageNames.MSG_STAFF_CONNECTED;
 
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class MessageStaffConnected implements JavaDelegate {
     EventSubscription subscription = runtimeService.createEventSubscriptionQuery()
         .processInstanceId(ownerMaintainInstanceId)
         .eventType("message")
-        .eventName("MessageStaffConnected")
+        .eventName(MSG_STAFF_CONNECTED)
         .singleResult();
 
     Map<String,Object> dmnOutput = delegateExecution.getVariablesTyped()

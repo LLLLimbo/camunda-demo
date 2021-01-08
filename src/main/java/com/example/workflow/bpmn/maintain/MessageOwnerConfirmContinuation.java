@@ -1,6 +1,7 @@
 package com.example.workflow.bpmn.maintain;
 
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.STAFF_CENTER_PROCESS_INSTANCE_ID;
+import static com.example.workflow.bpmn.maintain.MaintainProcessMessageNames.MSG_OWNER_CONFIRM_CONTINUATION;
 
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.RuntimeService;
@@ -23,7 +24,7 @@ public class MessageOwnerConfirmContinuation implements JavaDelegate {
     EventSubscription subscription = runtimeService.createEventSubscriptionQuery()
         .processInstanceId(staffInstanceId)
         .eventType("message")
-        .eventName("MessageOwnerConfirmContinuation")
+        .eventName(MSG_OWNER_CONFIRM_CONTINUATION)
         .singleResult();
 
     runtimeService

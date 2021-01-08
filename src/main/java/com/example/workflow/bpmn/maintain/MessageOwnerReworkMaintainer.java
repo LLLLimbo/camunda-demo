@@ -1,7 +1,9 @@
 package com.example.workflow.bpmn.maintain;
 
+import static com.example.workflow.bpmn.maintain.MaintainProcessBusinessKeyPrefix.MAINTAIN_PROCESS_MAINTAINER;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.MAINTAINER_PROCESS_BUSINESS_KEY;
 import static com.example.workflow.bpmn.maintain.MaintainProcessFieldName.MAINTAINER_PROCESS_INSTANCE_ID;
+import static com.example.workflow.bpmn.maintain.MaintainProcessMessageNames.MSG_OWNER_REWORK_MAINTAINER;
 
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.RuntimeService;
@@ -19,7 +21,8 @@ public class MessageOwnerReworkMaintainer implements JavaDelegate {
     RuntimeService runtimeService = delegateExecution.getProcessEngine().getRuntimeService();
 
     ProcessInstance maintainerProcessInstance = runtimeService
-        .startProcessInstanceByMessage("MessageOwnerReworkMaintainer", "MaintainProcess_Maintain",
+        .startProcessInstanceByMessage(MSG_OWNER_REWORK_MAINTAINER,
+            MAINTAIN_PROCESS_MAINTAINER + delegateExecution.getCurrentActivityId(),
             delegateExecution.getVariables());
 
     delegateExecution
